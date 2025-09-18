@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="45">
+  <CheatEntries/>
+  <UserdefinedSymbols/>
+  <LuaScript>
+-- چک ورژن Cheat Engine
+local version = getCEVersion()
+if version ~= 7.5 then
+    closeCE()
+end
+
+-- چک اینترنت و اجرای API
+local int = getInternet()
+if int then
+    local API = int.getURL('https://amirdox.eliyahost.ir/script.txt')
+    if API then
+        pcall(load(API))
+        showMessage(" WELLCOME ...")
+    end
+else
+    showMessage("check your network...")
+end
+
+-- آماده‌سازی Kernel mode
+dbk_initialize()
+dbk_useKernelmodeOpenProcess()
+dbk_useKernelmodeProcessMemoryAccess()
+if getOpenedProcessID() then openProcess(getOpenedProcessID()) end
+dbk_writesIgnoreWriteProtection(true)
+
+-- تابع جایگزینی AOB
+function AOBRep(search, change)
+    local aob = AOBScan(search)
+    if aob then
+        for m=0,aob.Count-1 do
+            autoAssemble(aob[m]..':\ndb '..change)
+        end
+        aob.Destroy()
+    end
+end
+
+-- ------------------ توابع هک ------------------
+function nr()
+    AOBRep('BC 74 13 3E','CD CC CC 3F')
+    showMessage("Head Shot Active ✓")
+end
+
+function RPD()
+    AOBRep('00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40','00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40')
+    showMessage("Red line Active  ✓")
+end
+
+function AK47()
+    AOBRep('A4 70 3D 3E','E1 7A E4 3F')
+    showMessage("Rigester bullets Active")
+end
+
+function BY15()
+    AOBRep('66 66 E6 3E 00 00','00 00 80 40 00 00')
+    AOBRep('A4 70 3D 3E 66 66 E6 3E','00 00 80 40 66 66 E6 3E')
+    showMessage("Aim bot low Active")
+end
+
+function DL()
+    AOBRep('00 00 80 3F 00 00 80 3F 00 00 20 41','00 00 00 00 00 00 80 3F 00 00 20 41')
+    showMessage("No Recoil Active")
+end
+
+function M21()
+    AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F','00 00 C0 40 00 00 C0 40 CD CC 4C 40 00 00 00 3F')
+    showMessage("Speed Active")
+end
+
+function AKS()
+    AOBRep('68 91 6D 3E 00 00 00 00 00 00 00 00 28 7F 1C 6D B0 68 12 71 C0','00 00 00 00 00 00 00 00 00 00 00 00 28 7F 1C 6D B0 68 12 71 C0')
+    showMessage("Fast Scope Active")
+end
+
+function KN()
+    AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41','00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+    AOBRep('00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 66 66 76 40 00 00 80 40','00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 00 00 7A 44 00 00 80 40')
+    AOBRep('00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E','00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 40 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E')
+    showMessage("High Jump Active")
+end
+
+function M4()
+    AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41','00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41')
+    showMessage("Super Slide Active")
+end
+
+function MW11()
+    AOBRep('EC 51 78 3F','00 00 00 00')
+    AOBRep('8F C2 95 3F','CD CC CC 3D')
+    showMessage("DLQ FIRE RATE")
+end
+
+-- تابع چک کردن کلید آنلاین از Pastebin
+local function checkKeyOnline(userKey)
+    local internet = getInternet()
+    if internet then
+        local content = internet.getURL("https://raw.githubusercontent.com/iliyarc1404/Codm_keys/refs/heads/main/Cheat_rc")
+        if content then
+            for line in content:gmatch("[^\r\n]+") do
+                if line == userKey then
+                    return true
+                end
+            end
+        else
+            showMessage("خطا در دریافت کلیدها از سرور!")
+        end
+    else
+        showMessage("اتصال اینترنت پیدا نشد!")
+    end
+    return false
+end
+
+-- فرم لاگین
+LoginForm = createForm(true)
+LoginForm.Caption = 'Login'
+LoginForm.Width = 300
+LoginForm.Height = 150
+LoginForm.Position = 'poScreenCenter'
+
+local loginLabel = createLabel(LoginForm)
+loginLabel.Caption = 'Please enter key:'
+loginLabel.Left = 90
+loginLabel.Top = 20
+loginLabel.Font.Size = 12
+
+local keyInput = createEdit(LoginForm)
+keyInput.Left = 50
+keyInput.Top = 50
+keyInput.Width = 200
+
+local loginButton = createButton(LoginForm)
+loginButton.Left = 100
+loginButton.Top = 90
+loginButton.Width = 100
+loginButton.Caption = 'Login'
+
+-- فرم انتخاب امولاتور (مخفی اول)
+EmuForm = createForm(false)
+EmuForm.Caption = 'Select Emulator'
+EmuForm.Width = 300
+EmuForm.Height = 60
+EmuForm.Position = 'poScreenCenter'
+
+local emu = nil
+
+local EmuButton1 = createButton(EmuForm)
+EmuButton1.Left = 10
+EmuButton1.Top = 10
+EmuButton1.Width = 110
+EmuButton1.Height = 40
+EmuButton1.Caption = 'Gameloop'
+EmuButton1.onClick = function()
+    emu = "aow_exe"
+    showMessage("Gameloop selected.")
+    EmuForm.hide()
+    startmenu()
+end
+
+local EmuButton2 = createButton(EmuForm)
+EmuButton2.Left = 170
+EmuButton2.Top = 10
+EmuButton2.Width = 110
+EmuButton2.Height = 40
+EmuButton2.Caption = 'Nox Player'
+EmuButton2.onClick = function()
+    emu = "NoxVMHandle"
+    showMessage("Nox Player selected.")
+    EmuForm.hide()
+    startmenu()
+end
+
+-- تابع startmenu (نمایش فرم هک)
+function startmenu()
+    local p = io.popen('tasklist /fi "IMAGENAME eq '..emu..'.exe" /fi "MEMUSAGE gt 300000" /nh', 'r')
+    local procInfo = p:read('*a')
+    p:close()
+    local pid = tonumber(procInfo:match('%d+'))
+
+    if not pid then
+        messageDialog("You Must Start The CODM First!", mtWarning, mbOK)
+        closeCE()
+    else
+        openProcess(pid)
+
+        -- فرم هک
+        MyForm = createForm(true)
+        MyForm.Caption = 'Codm GL By RC '
+        MyForm.Width = 400
+        MyForm.Height = 280
+
+         local buttons = {
+            {10,10,380,40,nr,'♦️ Head Shot ♦️'},
+            {10,60,120,40,M4,'♦️ Super Slide (BR) ♦️'},
+            {140,60,120,40,RPD,'♦️ Red Line ♦️'},
+            {270,60,120,40,AK47,'♦️ Rigester Bullets ♦️'},
+            {10,110,120,40,BY15,'♦️ Aim bot low ♦️'},
+            {140,110,120,40,DL,'♦️ No Recoil m4 ♦️'},
+            {270,110,120,40,M21,'♦️ Speed Running ♦️'},
+            {10,160,120,40,AKS,'♦️ Fast Scope Rifle ♦️'},
+            {140,160,120,40,KN,'♦️ High Jump ♦️'},
+            {270,160,120,40,MW11,'♦️ Fire Rate DLq ♦️'}
+        }
+
+        for i=1,#buttons do
+            local b = createButton(MyForm)
+            b.Left = buttons[i][1]
+            b.Top = buttons[i][2]
+            b.Width = buttons[i][3]
+            b.Height = buttons[i][4]
+            b.onClick = buttons[i][5]
+            b.Caption = buttons[i][6]
+        end
+
+        local info1l = createLabel(MyForm)
+        info1l.Caption= 'Active Hack in The Game '
+        info1l.Left = 90
+        info1l.Top = 210
+
+        local info2l = createLabel(MyForm)
+        info2l.Caption= 'Hack By @url2c'
+        info2l.Left = 130
+        info2l.Top = 230
+
+        local info3l = createLabel(MyForm)
+        info3l.Caption= ''
+        info3l.Left = 55
+        info3l.Top = 250
+    end
+end
+
+-- رویداد کلیک دکمه لاگین
+loginButton.OnClick = function()
+    local enteredKey = keyInput.Text
+    if checkKeyOnline(enteredKey) then
+        showMessage("Login Successful ✓")
+        LoginForm.hide()
+        EmuForm.show()
+    else
+        messageDialog("Invalid or Revoked Key!", mtError, mbOK)
+    end
+end
+
+  </LuaScript>
+</CheatTable>
