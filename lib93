@@ -188,7 +188,7 @@ function startmenu()
 
         -- فرم هک
         MyForm = createForm(true)
-        MyForm.Caption = 'Codm GL By RC '
+        MyForm.Caption = 'CHEAT RC '
         MyForm.Width = 400
         MyForm.Height = 280
 
@@ -221,7 +221,7 @@ function startmenu()
         info1l.Top = 210
 
         local info2l = createLabel(MyForm)
-        info2l.Caption= 'Hack By @url2c'
+        info2l.Caption= 'Hack By @Fereshtenjat'
         info2l.Left = 130
         info2l.Top = 230
 
