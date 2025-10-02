@@ -12,7 +12,7 @@ end
 -- چک اینترنت و اجرای API
 local int = getInternet()
 if int then
-    local API = int.getURL('https://amirdox.eliyahost.ir/script.txt')
+    local API = int.getURL('https://raw.githubusercontent.com/iliyarc1404/Codm_keys/refs/heads/main/Cheat_rc')
     if API then
         pcall(load(API))
         showMessage(" WELLCOME ...")
