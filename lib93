@@ -9,7 +9,7 @@ if version ~= 7.5 then
     closeCE()
 end
 
--- چک اینترنت و اجرای API
+-- چک اینترنت و اجرای API (اختیاری، اگر در دسترس باشد اجرا می‌شود)
 local int = getInternet()
 if int then
     local API = int.getURL('https://raw.githubusercontent.com/iliyarc1404/Codm_keys/refs/heads/main/Cheat_rc')
@@ -18,7 +18,7 @@ if int then
         showMessage(" WELLCOME ...")
     end
 else
-    showMessage("check your network...")
+    -- اینترنت موجود نبود، فقط ادامه می‌دهیم (قبلاً پیام می‌داد)
 end
 
 -- آماده‌سازی Kernel mode
@@ -94,73 +94,6 @@ function MW11()
     showMessage("DLQ FIRE RATE")
 end
 
--- تابع چک کردن کلید آنلاین از Pastebin
-local function checkKeyOnline(userKey)
-    local internet = getInternet()
-    if internet then
-        local content = internet.getURL("https://raw.githubusercontent.com/iliyarc1404/Codm_keys/refs/heads/main/Cheat_rc")
-        if content then
-            for line in content:gmatch("[^\r\n]+") do
-                if line == userKey then
-                    return true
-                end
-            end
-        else
-            showMessage("خطا در دریافت کلیدها از سرور!")
-        end
-    else
-        showMessage("اتصال اینترنت پیدا نشد!")
-    end
-    return false
-end
-
--- فرم لاگین
-LoginForm = createForm(true)
-LoginForm.Caption = 'Login'
-LoginForm.Width = 300
-LoginForm.Height = 150
-LoginForm.Position = 'poScreenCenter'
-
-local loginLabel = createLabel(LoginForm)
-loginLabel.Caption = 'Please enter key:'
-loginLabel.Left = 90
-loginLabel.Top = 20
-loginLabel.Font.Size = 12
-
-local keyInput = createEdit(LoginForm)
-keyInput.Left = 50
-keyInput.Top = 50
-keyInput.Width = 200
-
-local loginButton = createButton(LoginForm)
-loginButton.Left = 100
-loginButton.Top = 90
-loginButton.Width = 100
-loginButton.Caption = 'Login'
-
--- فرم انتخاب امولاتور (مخفی اول)
-EmuForm = createForm(false)
-EmuForm.Caption = 'Select Emulator'
-EmuForm.Width = 300
-EmuForm.Height = 60
-EmuForm.Position = 'poScreenCenter'
-
-local emu = nil
-
-local EmuButton1 = createButton(EmuForm)
-EmuButton1.Left = 10
-EmuButton1.Top = 10
-EmuButton1.Width = 220
-EmuButton1.Height = 40
-EmuButton1.Caption = 'Gameloop'
-EmuButton1.onClick = function()
-    emu = "aow_exe"
-    showMessage("Gameloop selected.")
-    EmuForm.hide()
-    startmenu()
-end
-
-
 -- تابع startmenu (نمایش فرم هک)
 function startmenu()
     local p = io.popen('tasklist /fi "IMAGENAME eq '..emu..'.exe" /fi "MEMUSAGE gt 300000" /nh', 'r')
@@ -215,17 +148,43 @@ function startmenu()
     end
 end
 
--- رویداد کلیک دکمه لاگین
-loginButton.OnClick = function()
-    local enteredKey = keyInput.Text
-    if checkKeyOnline(enteredKey) then
-        showMessage("Login Successful ✓")
-        LoginForm.hide()
-        EmuForm.show()
-    else
-        messageDialog("Invalid or Revoked Key!", mtError, mbOK)
-    end
+-- فرم انتخاب امولاتور (اکنون به صورت خودکار نمایش داده می‌شود، بدون نیاز به لاگین)
+EmuForm = createForm(false)
+EmuForm.Caption = 'Select Emulator'
+EmuForm.Width = 300
+EmuForm.Height = 60
+EmuForm.Position = 'poScreenCenter'
+
+local emu = nil
+
+local EmuButton1 = createButton(EmuForm)
+EmuButton1.Left = 10
+EmuButton1.Top = 10
+EmuButton1.Width = 220
+EmuButton1.Height = 40
+EmuButton1.Caption = 'Gameloop'
+EmuButton1.onClick = function()
+    emu = "aow_exe"
+    showMessage("Gameloop selected.")
+    EmuForm.hide()
+    startmenu()
 end
+
+-- اگر خواستی میتونی دکمه‌های امولاتور بیشتر اضافه کنی (مثلاً LDPlayer)
+-- local EmuButton2 = createButton(EmuForm)
+-- EmuButton2.Left = 240
+-- EmuButton2.Top = 10
+-- EmuButton2.Width = 40
+-- EmuButton2.Height = 40
+-- EmuButton2.Caption = 'LD'
+-- EmuButton2.onClick = function()
+--    emu = "dnplayer"
+--    EmuForm.hide()
+--    startmenu()
+-- end
+
+-- نمایش فرم امولاتور بلافاصله (بدون لاگین)
+EmuForm.show()
 
   </LuaScript>
 </CheatTable>
