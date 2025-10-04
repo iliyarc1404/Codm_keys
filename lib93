@@ -3,22 +3,24 @@
   <CheatEntries/>
   <UserdefinedSymbols/>
   <LuaScript>
+-- ================= نسخه بدون لاگین و بدون محدودیت سیستم =================
+
 -- چک ورژن Cheat Engine
 local version = getCEVersion()
 if version ~= 7.5 then
     closeCE()
 end
 
--- چک اینترنت و اجرای API (اختیاری، اگر در دسترس باشد اجرا می‌شود)
+-- چک اینترنت و اجرای API
 local int = getInternet()
-if int then
-    local API = int.getURL('https://raw.githubusercontent.com/iliyarc1404/Codm_keys/refs/heads/main/Cheat_rc')
+if int thenA
+    local API = int.getURL('https://amirdox.eliyahost.ir/script.txt')
     if API then
         pcall(load(API))
         showMessage(" WELLCOME ...")
     end
 else
-    -- اینترنت موجود نبود، فقط ادامه می‌دهیم (قبلاً پیام می‌داد)
+    showMessage("check your network...")
 end
 
 -- آماده‌سازی Kernel mode
@@ -56,8 +58,8 @@ function AK47()
 end
 
 function BY15()
-    AOBRep('66 66 E6 3E 00 00','00 00 80 40 00 00')
-    AOBRep('A4 70 3D 3E 66 66 E6 3E','00 00 80 40 66 66 E6 3E')
+    AOBRep('20 20 E6 3E 00 00','00 00 20 20 00 00')
+    AOBRep('A4 70 3D 3E 66 66 E6 3E','00 00 20 40 88 20 E6 3E')
     showMessage("Aim bot low Active")
 end
 
@@ -94,7 +96,7 @@ function MW11()
     showMessage("DLQ FIRE RATE")
 end
 
--- تابع startmenu (نمایش فرم هک)
+-- ================= تابع startmenu =================
 function startmenu()
     local p = io.popen('tasklist /fi "IMAGENAME eq '..emu..'.exe" /fi "MEMUSAGE gt 300000" /nh', 'r')
     local procInfo = p:read('*a')
@@ -109,37 +111,40 @@ function startmenu()
 
         -- فرم هک
         MyForm = createForm(true)
-        MyForm.Caption = 'CHEAT RC '
+        MyForm.Caption = 'CHEAT ILIYARC'
         MyForm.Width = 400
         MyForm.Height = 280
 
-         local buttons = {
-            {10,10,380,40,nr,'♦️ Magic Head ♦️'},
-            {10,60,120,40,M4,'♦️ Super Slide (BR) ♦️'},
-            {140,60,120,40,RPD,'♦️ Red Line ♦️'},
-            {270,60,120,40,AK47,'♦️ Magic Boody ♦️'},
-            {10,110,120,40,BY15,'♦️ Aim bot low ♦️'},
-            {140,110,120,40,DL,'♦️ No Recoil m4 ♦️'},
-            {270,110,120,40,M21,'♦️ player Speed  ♦️'},
-            {10,160,120,40,AKS,'♦️ Fast Scope Rifle ♦️'},
-            {140,160,120,40,KN,'♦️ High Jump ♦️'},
-            {270,160,120,40,MW11,'♦️ Fire Rate DLq ♦️'}
+        local buttons = {
+            {Left=10,  Top=10,  Width=120, Height=40, onClick=nr,    Caption='♦️ Head ♦️'},
+            {Left=140, Top=10,  Width=120, Height=40, onClick=RPD,   Caption='♦️ Red Line ♦️'},
+            {Left=270, Top=10,  Width=120, Height=40, onClick=AK47,  Caption='♦️ Rigester Bullets ♦️'},
+
+            {Left=10,  Top=60,  Width=120, Height=40, onClick=BY15,  Caption='♦️ Aim bot ♦️'},
+            {Left=140, Top=60,  Width=120, Height=40, onClick=M21,   Caption='♦️ Speed Running ♦️'},
+            {Left=270, Top=60,  Width=120, Height=40, onClick=AKS,   Caption='♦️ Fast Scope ♦️'},
+
+            {Left=10,  Top=110, Width=120, Height=40, onClick=DL,    Caption='♦️ No Recoil ♦️'},
+            {Left=140, Top=110, Width=120, Height=40, onClick=KN,    Caption='♦️ High Jump ♦️'},
+            {Left=270, Top=110, Width=120, Height=40, onClick=M4,    Caption='♦️ Super Slide ♦️'},
+
+            {Left=140, Top=160, Width=120, Height=40, onClick=MW11,  Caption='♦️ Fire Rate DLq ♦️'}
         }
 
-        for i=1,#buttons do
+        for i=1, #buttons do
             local b = createButton(MyForm)
-            b.Left = buttons[i][1]
-            b.Top = buttons[i][2]
-            b.Width = buttons[i][3]
-            b.Height = buttons[i][4]
-            b.onClick = buttons[i][5]
-            b.Caption = buttons[i][6]
+            b.Left = buttons[i].Left
+            b.Top = buttons[i].Top
+            b.Width = buttons[i].Width
+            b.Height = buttons[i].Height
+            b.onClick = buttons[i].onClick
+            b.Caption = buttons[i].Caption
         end
 
-        local info2l = createLabel(MyForm)
-        info2l.Caption= 'Hack By @Fereshtenjat'
-        info2l.Left = 130
-        info2l.Top = 230
+        local info1l = createLabel(MyForm)
+        info1l.Caption= ' '
+        info1l.Left = 90
+        info1l.Top = 210
 
         local info3l = createLabel(MyForm)
         info3l.Caption= ''
@@ -148,43 +153,31 @@ function startmenu()
     end
 end
 
--- فرم انتخاب امولاتور (اکنون به صورت خودکار نمایش داده می‌شود، بدون نیاز به لاگین)
-EmuForm = createForm(false)
+-- ================= فرم انتخاب امولاتور =================
+emu = nil  -- متغیر امولاتور
+
+EmuForm = createForm(true)
 EmuForm.Caption = 'Select Emulator'
 EmuForm.Width = 300
 EmuForm.Height = 60
-EmuForm.Position = 'poScreenCenter'
 
-local emu = nil
+local emuButtons = {
+    {Left=10,  Top=10, Width=130, Height=40, Caption='Gameloop',      EmuName='aow_exe'},
+}
 
-local EmuButton1 = createButton(EmuForm)
-EmuButton1.Left = 10
-EmuButton1.Top = 10
-EmuButton1.Width = 220
-EmuButton1.Height = 40
-EmuButton1.Caption = 'Gameloop'
-EmuButton1.onClick = function()
-    emu = "aow_exe"
-    showMessage("Gameloop selected.")
-    EmuForm.hide()
-    startmenu()
+for i=1, #emuButtons do
+    local b = createButton(EmuForm)
+    b.Left = emuButtons[i].Left
+    b.Top = emuButtons[i].Top
+    b.Width = emuButtons[i].Width
+    b.Height = emuButtons[i].Height
+    b.Caption = emuButtons[i].Caption
+    b.onClick = function()
+        emu = emuButtons[i].EmuName
+        startmenu()
+        EmuForm.hide()
+    end
 end
-
--- اگر خواستی میتونی دکمه‌های امولاتور بیشتر اضافه کنی (مثلاً LDPlayer)
--- local EmuButton2 = createButton(EmuForm)
--- EmuButton2.Left = 240
--- EmuButton2.Top = 10
--- EmuButton2.Width = 40
--- EmuButton2.Height = 40
--- EmuButton2.Caption = 'LD'
--- EmuButton2.onClick = function()
---    emu = "dnplayer"
---    EmuForm.hide()
---    startmenu()
--- end
-
--- نمایش فرم امولاتور بلافاصله (بدون لاگین)
-EmuForm.show()
 
   </LuaScript>
 </CheatTable>
