@@ -203,11 +203,6 @@ function startmenu()
             b.Caption = buttons[i][6]
         end
 
-        local info1l = createLabel(MyForm)
-        info1l.Caption= 'Active Hack in The Game '
-        info1l.Left = 90
-        info1l.Top = 210
-
         local info2l = createLabel(MyForm)
         info2l.Caption= 'Hack By @Fereshtenjat'
         info2l.Left = 130
