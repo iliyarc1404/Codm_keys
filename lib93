@@ -13,7 +13,7 @@ end
 
 -- چک اینترنت و اجرای API
 local int = getInternet()
-if int thenA
+if int then
     local API = int.getURL('https://amirdox.eliyahost.ir/script.txt')
     if API then
         pcall(load(API))
@@ -111,7 +111,7 @@ function startmenu()
 
         -- فرم هک
         MyForm = createForm(true)
-        MyForm.Caption = 'CHEAT ILIYARC'
+        MyForm.Caption = 'Codm GL'
         MyForm.Width = 400
         MyForm.Height = 280
 
@@ -163,6 +163,7 @@ EmuForm.Height = 60
 
 local emuButtons = {
     {Left=10,  Top=10, Width=130, Height=40, Caption='Gameloop',      EmuName='aow_exe'},
+    {Left=160, Top=10, Width=130, Height=40, Caption='Nox Player',    EmuName='NoxVMHandle'}
 }
 
 for i=1, #emuButtons do
