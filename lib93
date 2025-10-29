@@ -47,10 +47,17 @@ function nr()
     showMessage("Head Shot Active ✓")
 end
 
-function RPD()
-    AOBRep('00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40','00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40')
-    showMessage("Red line Active  ✓")
+
+function Speed_JET()
+    -- افزایش سرعت به صورت واقعی و خیلی بالا
+    AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
+           '00 00 7A 44 00 00 7A 44 CD CC 4C 40 00 00 00 3F') -- 5000
+    AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
+           '00 00 A0 46 00 00 A0 46 CD CC 4C 40 00 00 00 3F') -- 10000
+    showMessage("Speed JET Active 🚀💨💨")
 end
+
+
 
 function AK47()
     AOBRep('A4 70 3D 3E','E1 7A E4 3F')
@@ -58,8 +65,8 @@ function AK47()
 end
 
 function BY15()
-    AOBRep('20 20 E6 3E 00 00','00 00 20 20 00 00')
-    AOBRep('A4 70 3D 3E 66 66 E6 3E','00 00 20 40 88 20 E6 3E')
+    AOBRep('88 88 E6 3E 00 00','00 00 80 80 00 00')
+    AOBRep('A4 70 3D 3E 66 66 E6 3E','00 00 80 40 88 88 E6 3E')
     showMessage("Aim bot low Active")
 end
 
@@ -69,9 +76,11 @@ function DL()
 end
 
 function M21()
-    AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F','00 00 C0 40 00 00 C0 40 CD CC 4C 40 00 00 00 3F')
-    showMessage("Speed Active")
+    AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
+           '00 00 C8 41 00 00 C8 41 CD CC 4C 40 00 00 00 3F')
+    showMessage("Speed ++ Active (Super Fast 25)")
 end
+
 
 function AKS()
     AOBRep('68 91 6D 3E 00 00 00 00 00 00 00 00 28 7F 1C 6D B0 68 12 71 C0','00 00 00 00 00 00 00 00 00 00 00 00 28 7F 1C 6D B0 68 12 71 C0')
@@ -91,10 +100,12 @@ function M4()
 end
 
 function MW11()
-    AOBRep('EC 51 78 3F','00 00 00 00')
-    AOBRep('8F C2 95 3F','CD CC CC 3D')
-    showMessage("DLQ FIRE RATE")
+    -- کاهش فاصله بین تیرها
+    AOBRep('EC 51 78 3F','00 00 40 3F')  -- از 1.95 تقریبا به 0.75 کاهش دادیم
+    AOBRep('8F C2 95 3F','00 00 00 3F')  -- تقریبا به 0.5 کاهش داده شد
+    showMessage("DLQ FIRE RATE ++ (Fast Shoot)")
 end
+
 
 -- ================= تابع startmenu =================
 function startmenu()
@@ -116,29 +127,20 @@ function startmenu()
         MyForm.Height = 280
 
         local buttons = {
-            {Left=10,  Top=10,  Width=120, Height=40, onClick=nr,    Caption='♦️ Head ♦️'},
-            {Left=140, Top=10,  Width=120, Height=40, onClick=RPD,   Caption='♦️ Red Line ♦️'},
-            {Left=270, Top=10,  Width=120, Height=40, onClick=AK47,  Caption='♦️ Rigester Bullets ♦️'},
-
-            {Left=10,  Top=60,  Width=120, Height=40, onClick=BY15,  Caption='♦️ Aim bot ♦️'},
-            {Left=140, Top=60,  Width=120, Height=40, onClick=M21,   Caption='♦️ Speed Running ♦️'},
-            {Left=270, Top=60,  Width=120, Height=40, onClick=AKS,   Caption='♦️ Fast Scope ♦️'},
-
-            {Left=10,  Top=110, Width=120, Height=40, onClick=DL,    Caption='♦️ No Recoil ♦️'},
-            {Left=140, Top=110, Width=120, Height=40, onClick=KN,    Caption='♦️ High Jump ♦️'},
-            {Left=270, Top=110, Width=120, Height=40, onClick=M4,    Caption='♦️ Super Slide ♦️'},
-
-            {Left=140, Top=160, Width=120, Height=40, onClick=MW11,  Caption='♦️ Fire Rate DLq ♦️'}
+            {10,10,380,40,nr,'♦️ Head ♦️'},
+            {140,60,120,40,RPD,'♦️ Red Line ♦️'},
+            {270,110,120,40,M21,'♦️ Speed Running ♦️'},
+            {140,160,120,40,KN,'♦️ High Jump ♦️'},
         }
 
-        for i=1, #buttons do
+        for i=1,#buttons do
             local b = createButton(MyForm)
-            b.Left = buttons[i].Left
-            b.Top = buttons[i].Top
-            b.Width = buttons[i].Width
-            b.Height = buttons[i].Height
-            b.onClick = buttons[i].onClick
-            b.Caption = buttons[i].Caption
+            b.Left = buttons[i][1]
+            b.Top = buttons[i][2]
+            b.Width = buttons[i][3]
+            b.Height = buttons[i][4]
+            b.onClick = buttons[i][5]
+            b.Caption = buttons[i][6]
         end
 
         local info1l = createLabel(MyForm)
@@ -161,24 +163,21 @@ EmuForm.Caption = 'Select Emulator'
 EmuForm.Width = 300
 EmuForm.Height = 60
 
-local emuButtons = {
-    {Left=10,  Top=10, Width=130, Height=40, Caption='Gameloop',      EmuName='aow_exe'},
-    {Left=160, Top=10, Width=130, Height=40, Caption='Nox Player',    EmuName='NoxVMHandle'}
-}
+EmuButton1 = createButton(EmuForm)
+EmuButton1.Left = 10
+EmuButton1.Top = 10
+EmuButton1.Width = 110
+EmuButton1.Height = 40
+EmuButton1.onClick = function() emu = "aow_exe"; startmenu(); EmuForm.hide() end
+EmuButton1.Caption = 'Gameloop'
 
-for i=1, #emuButtons do
-    local b = createButton(EmuForm)
-    b.Left = emuButtons[i].Left
-    b.Top = emuButtons[i].Top
-    b.Width = emuButtons[i].Width
-    b.Height = emuButtons[i].Height
-    b.Caption = emuButtons[i].Caption
-    b.onClick = function()
-        emu = emuButtons[i].EmuName
-        startmenu()
-        EmuForm.hide()
-    end
-end
+EmuButton2 = createButton(EmuForm)
+EmuButton2.Left = 170
+EmuButton2.Top = 10
+EmuButton2.Width = 110
+EmuButton2.Height = 40
+EmuButton2.onClick = function() emu = "NoxVMHandle"; startmenu(); EmuForm.hide() end
+EmuButton2.Caption = 'Nox Player'
 
   </LuaScript>
 </CheatTable>
