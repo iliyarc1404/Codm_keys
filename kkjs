@@ -3,8 +3,6 @@
   <CheatEntries/>
   <UserdefinedSymbols/>
   <LuaScript>
--- ================= نسخه بدون محدودیت =================
-
 dbk_initialize()
 dbk_useKernelmodeOpenProcess()
 dbk_useKernelmodeProcessMemoryAccess()
@@ -21,7 +19,6 @@ function AOBRep(search, change)
     end
 end
 
--- ------------------ توابع هک ------------------
 function nr()
     AOBRep('BC 74 13 3E','CD CC CC 3F')
     showMessage("Head Shot Active ✓")
@@ -44,14 +41,13 @@ function DL()
 end
 
 function KN()
-    AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41','00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
-    AOBRep('00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 66 66 76 40 00 00 80 40','00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 00 00 7A 44 00 00 80 40')
-    AOBRep('00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E','00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 40 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E')
+    AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
+           '00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+    AOBRep('00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 66 66 76 40 00 00 80 40',
+           '00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 00 00 7A 44 00 00 80 40')
+    AOBRep('00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E',
+           '00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 40 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E')
     showMessage("High Jump Active")
-end
-
-function KN()
-    SuperJump_Max()
 end
 
 function M21()
@@ -72,7 +68,6 @@ function MW11()
     showMessage("DLQ FIRE RATE MAX Active")
 end
 
--- ================= فرم اصلی =================
 function startmenu()
     local p = io.popen('tasklist /fi "IMAGENAME eq '..emu..'.exe" /fi "MEMUSAGE gt 300000" /nh', 'r')
     local procInfo = p:read('*a')
@@ -90,12 +85,11 @@ function startmenu()
         MyForm.Width = 420
         MyForm.Height = 400
 
-        -- دکمه‌ها مرتب و بزرگ برای دسترسی راحت
         local buttons = {
             {10,10,200,60,nr,'♦️ Head Shot'},
             {210,10,200,60,AK47,'♦️ Unlimited Bullets'},
             {10,80,200,60,M21,'♦️ Max Speed Running'},
-            {210,80,200,60,KN,'♦️ Max Super Jump'},
+            {210,80,200,60,KN,'♦️ High Jump'},
             {10,150,200,60,M4,'♦️ Super Slide Max'},
             {210,150,200,60,MW11,'♦️ Max Fire Rate'},
             {110,220,200,60,BY15,'♦️ Aim Bot Low'},
@@ -114,7 +108,6 @@ function startmenu()
     end
 end
 
--- ================= فرم انتخاب امولاتور =================
 emu = nil
 
 EmuForm = createForm(true)
