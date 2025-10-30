@@ -51,9 +51,8 @@ function KN()
 end
 
 function M21()
-    AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
-           '00 00 FA 46 00 00 FA 46 CD CC 4C 40 00 00 00 3F')
-    showMessage("Speed ++ Max Active")
+        AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F','00 00 1C 46 00 00 1C 46 47 C3 50 00 00 00 00 3F')
+    showMessage("Speed Active")
 end
 
 function M4()
