@@ -20,14 +20,18 @@ function AOBRep(search, change)
 end
 
 function nr()
-    AOBRep('BC 74 13 3E','CD CC CC 3F')
+    local searchV = 'BC 74 13 3E'
+    local replaceV = 'CD CC CC 3F'
+    AOBRep(searchV,replaceV)
     showMessage("Head Shot Active ✓")
-end
+  end
 
-function AK47()
-    AOBRep('A4 70 3D 3E','E1 7A E4 3F')
-    showMessage("Unlimited Bullets Active")
-end
+ function RPD()
+    local searchV = '00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40'
+    local replaceV = '00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40'
+    AOBRep(searchV,replaceV)
+    showMessage("Red line Active ✓")
+  end
 
 function BY15()
     AOBRep('88 88 E6 3E 00 00','00 00 80 80 00 00')
@@ -41,20 +45,38 @@ function DL()
 end
 
 function KN()
+    -- پرش 50
     AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
-           '00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+           '00 00 48 42 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+    
+    -- سرعت جلو خیلی زیاد
     AOBRep('00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 66 66 76 40 00 00 80 40',
-           '00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 00 00 7A 44 00 00 80 40')
+           '00 00 7A 44 00 00 7A 44 9A 99 99 3E 66 66 76 40 00 00 7A 44 00 00 80 40')
+    
+    -- تنظیمات جانبی باقی می‌ماند
     AOBRep('00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E',
            '00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 40 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E')
-    showMessage("High Jump Active")
+    
+    showMessage("High Jump + Super Forward Speed Active")
 end
 
+
 function M21()
-    AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
-           '00 00 FA 46 00 00 FA 46 CD CC 4C 40 00 00 00 3F')
-    showMessage("Speed ++ Max Active")
+    if not speedActive then
+        -- فعال‌سازی افزایش سرعت
+        AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
+               '00 00 FA 46 00 00 FA 46 CD CC 4C 40 00 00 00 3F')
+        showMessage("Speed ++ Max Active")
+        speedActive = true
+    else
+        -- بازگرداندن به حالت عادی
+        AOBRep('00 00 FA 46 00 00 FA 46 CD CC 4C 40 00 00 00 3F',
+               'C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F')
+        showMessage("Speed Normal Restored")
+        speedActive = false
+    end
 end
+
 
 function M4()
     AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41',
@@ -87,13 +109,11 @@ function startmenu()
 
         local buttons = {
             {10,10,200,60,nr,'♦️ Head Shot'},
-            {210,10,200,60,AK47,'♦️ Unlimited Bullets'},
+            {210,10,200,60,RPD,'♦️ Red Line'},
             {10,80,200,60,M21,'♦️ Max Speed Running'},
             {210,80,200,60,KN,'♦️ High Jump'},
             {10,150,200,60,M4,'♦️ Super Slide Max'},
             {210,150,200,60,MW11,'♦️ Max Fire Rate'},
-            {110,220,200,60,BY15,'♦️ Aim Bot Low'},
-            {110,290,200,60,DL,'♦️ No Recoil'},
         }
 
         for i=1,#buttons do
