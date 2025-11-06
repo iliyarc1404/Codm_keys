@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="45">
+  <CheatEntries/>
+  <UserdefinedSymbols/>
+  <LuaScript>
+dbk_initialize()
+dbk_useKernelmodeOpenProcess()
+dbk_useKernelmodeProcessMemoryAccess()
+if getOpenedProcessID() then openProcess(getOpenedProcessID()) end
+dbk_writesIgnoreWriteProtection(true)
+
+function AOBRep(search, change)
+    local aob = AOBScan(search)
+    if aob then
+        for m=0,aob.Count-1 do
+            autoAssemble(aob[m]..':\ndb '..change)
+        end
+        aob.Destroy()
+    end
+end
+
+-- Headshot
+function HeadshotON()
+    AOBRep('BC 74 13 3E','CD CC CC 3F')
+    showMessage("Head Shot Active ✓")
+end
+function HeadshotOFF()
+    AOBRep('CD CC CC 3F','BC 74 13 3E')
+    showMessage("Head Shot Restored")
+end
+
+-- Red Line
+function RedlineON()
+    AOBRep('00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40',
+           '00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40')
+    showMessage("Red Line Active ✓")
+end
+function RedlineOFF()
+    AOBRep('00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40',
+           '00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40')
+    showMessage("Red Line Restored")
+end
+
+-- Speed
+function SpeedON()
+    -- سرعت جلو/عقب و چپ/راست هر دو 100000
+    AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
+           '00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47')
+    showMessage("Speed ++ Max 100k Active")
+end
+function SpeedOFF()
+    AOBRep('00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47',
+           'C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F')
+    showMessage("Speed Normal Restored")
+end
+
+-- High Jump
+function JumpON()
+    AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
+           '00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+    AOBRep('00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 66 66 76 40 00 00 80 40',
+           '00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 00 00 7A 44 00 00 80 40')
+    AOBRep('00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E',
+           '00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 40 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E')
+    showMessage("High Jump Active")
+end
+function JumpOFF()
+    AOBRep('00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
+           'CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+    showMessage("High Jump Restored")
+end
+
+-- Super Slide
+function SuperSlideON()
+    AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41',
+           '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41')
+    showMessage("Super Slide Max Active")
+end
+function SuperSlideOFF()
+    AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41',
+           '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41')
+    showMessage("Super Slide Restored")
+end
+
+-- Visual Recoil Only
+function RecoilON()
+    AOBRep('00 00 80 3F 00 00 80 3F 00 00 20 41',
+           '0A D7 23 3C 0A D7 23 3C 00 00 20 41')
+    showMessage("Visual Recoil Only Active")
+end
+function RecoilOFF()
+    AOBRep('0A D7 23 3C 0A D7 23 3C 00 00 20 41',
+           '00 00 80 3F 00 00 80 3F 00 00 20 41')
+    showMessage("Recoil Restored")
+end
+
+-- GUI
+function startmenu()
+    local p = io.popen('tasklist /fi "IMAGENAME eq '..emu..'.exe" /fi "MEMUSAGE gt 300000" /nh', 'r')
+    local procInfo = p:read('*a')
+    p:close()
+    local pid = tonumber(procInfo:match('%d+'))
+
+    if not pid then
+        messageDialog("You Must Start The CODM First!", mtWarning, mbOK)
+        closeCE()
+    else
+        openProcess(pid)
+
+        MyForm = createForm(true)
+        MyForm.Caption = 'Codm Cheat Test'
+        MyForm.Width = 480
+        MyForm.Height = 500  -- بزرگ‌تر شد تا همه دکمه‌ها جا بشن
+
+        local buttons = {
+            {10,10,200,60,HeadshotON,'♦️ Head Shot ON'},
+            {240,10,200,60,HeadshotOFF,'♦️ Head Shot OFF'},
+            {10,80,200,60,RedlineON,'♦️ Red Line ON'},
+            {240,80,200,60,RedlineOFF,'♦️ Red Line OFF'},
+            {10,150,200,60,SpeedON,'♦️ Max Speed ON'},
+            {240,150,200,60,SpeedOFF,'♦️ Max Speed OFF'},
+            {10,220,200,60,JumpON,'♦️ Jump ON'},
+            {240,220,200,60,JumpOFF,'♦️ Jump OFF'},
+            {10,290,200,60,SuperSlideON,'♦️ Super Slide ON'},
+            {240,290,200,60,SuperSlideOFF,'♦️ Super Slide OFF'},
+            {10,360,200,60,RecoilON,'♦️ Recoil ON'},
+            {240,360,200,60,RecoilOFF,'♦️ Recoil OFF'},
+        }
+
+        for i=1,#buttons do
+            local b = createButton(MyForm)
+            b.Left = buttons[i][1]
+            b.Top = buttons[i][2]
+            b.Width = buttons[i][3]
+            b.Height = buttons[i][4]
+            b.onClick = buttons[i][5]
+            b.Caption = buttons[i][6]
+        end
+    end
+end
+
+emu = nil
+
+EmuForm = createForm(true)
+EmuForm.Caption = 'Select Emulator'
+EmuForm.Width = 300
+EmuForm.Height = 60
+
+EmuButton1 = createButton(EmuForm)
+EmuButton1.Left = 10
+EmuButton1.Top = 10
+EmuButton1.Width = 280
+EmuButton1.Height = 40
+EmuButton1.onClick = function() emu = "aow_exe"; startmenu(); EmuForm.hide() end
+EmuButton1.Caption = 'Gameloop'
+
+  </LuaScript> 
+</CheatTable>
