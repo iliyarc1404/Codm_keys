@@ -19,79 +19,108 @@ function AOBRep(search, change)
     end
 end
 
--- Headshot
-function HeadshotON()
-    AOBRep('BC 74 13 3E','CD CC CC 3F')
-    showMessage("Head Shot Active ✓")
-end
-function HeadshotOFF()
-    AOBRep('CD CC CC 3F','BC 74 13 3E')
-    showMessage("Head Shot Restored")
+-- وضعیت Toggle
+HeadshotState = false
+RedlineState = false
+SpeedState = false
+JumpState = false
+SuperSlideState = false
+RecoilState = false
+AK47State = false
+
+-- Toggle Functions
+function ToggleHeadshot()
+    if HeadshotState then
+        AOBRep('CD CC CC 3F','BC 74 13 3E')
+        showMessage("Head Shot OFF")
+        HeadshotState = false
+    else
+        AOBRep('BC 74 13 3E','CD CC CC 3F')
+        showMessage("Head Shot ON")
+        HeadshotState = true
+    end
 end
 
--- Red Line
-function RedlineON()
-    AOBRep('00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40',
-           '00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40')
-    showMessage("Red Line Active ✓")
-end
-function RedlineOFF()
-    AOBRep('00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40',
-           '00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40')
-    showMessage("Red Line Restored")
-end
-
--- Speed
-function SpeedON()
-    -- سرعت جلو/عقب و چپ/راست هر دو 100000
-    AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
-           '00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47')
-    showMessage("Speed ++ Max 100k Active")
-end
-function SpeedOFF()
-    AOBRep('00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47',
-           'C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F')
-    showMessage("Speed Normal Restored")
+function ToggleRedline()
+    if RedlineState then
+        AOBRep('00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40',
+               '00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40')
+        showMessage("Red Line OFF")
+        RedlineState = false
+    else
+        AOBRep('00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40',
+               '00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40')
+        showMessage("Red Line ON")
+        RedlineState = true
+    end
 end
 
--- High Jump
-function JumpON()
-    AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
-           '00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
-    AOBRep('00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 66 66 76 40 00 00 80 40',
-           '00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 00 00 7A 44 00 00 80 40')
-    AOBRep('00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E',
-           '00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 40 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E')
-    showMessage("High Jump Active")
-end
-function JumpOFF()
-    AOBRep('00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
-           'CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
-    showMessage("High Jump Restored")
+function ToggleSpeed()
+    if SpeedState then
+        AOBRep('00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47',
+               'C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F')
+        showMessage("Speed Normal")
+        SpeedState = false
+    else
+        AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
+               '00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47')
+        showMessage("Max Speed ON")
+        SpeedState = true
+    end
 end
 
--- Super Slide
-function SuperSlideON()
-    AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41',
-           '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41')
-    showMessage("Super Slide Max Active")
-end
-function SuperSlideOFF()
-    AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41',
-           '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41')
-    showMessage("Super Slide Restored")
+function ToggleJump()
+    if JumpState then
+        AOBRep('00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
+               'CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+        showMessage("Jump OFF")
+        JumpState = false
+    else
+        AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
+               '00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+        showMessage("Jump ON")
+        JumpState = true
+    end
 end
 
--- Visual Recoil Only
-function RecoilON()
-    AOBRep('00 00 80 3F 00 00 80 3F 00 00 20 41',
-           '0A D7 23 3C 0A D7 23 3C 00 00 20 41')
-    showMessage("Visual Recoil Only Active")
+function ToggleSuperSlide()
+    if SuperSlideState then
+        AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41',
+               '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41')
+        showMessage("Super Slide OFF")
+        SuperSlideState = false
+    else
+        AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41',
+               '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41')
+        showMessage("Super Slide ON")
+        SuperSlideState = true
+    end
 end
-function RecoilOFF()
-    AOBRep('0A D7 23 3C 0A D7 23 3C 00 00 20 41',
-           '00 00 80 3F 00 00 80 3F 00 00 20 41')
-    showMessage("Recoil Restored")
+
+function ToggleRecoil()
+    if RecoilState then
+        AOBRep('0A D7 23 3C 0A D7 23 3C 00 00 20 41',
+               '00 00 80 3F 00 00 80 3F 00 00 20 41')
+        showMessage("Recoil OFF")
+        RecoilState = false
+    else
+        AOBRep('00 00 80 3F 00 00 80 3F 00 00 20 41',
+               '0A D7 23 3C 0A D7 23 3C 00 00 20 41')
+        showMessage("Recoil ON")
+        RecoilState = true
+    end
+end
+
+function ToggleAK47()
+    if AK47State then
+        AOBRep('E1 7A E4 3F','A4 70 3D 3E')
+        showMessage("AK47 OFF")
+        AK47State = false
+    else
+        AOBRep('A4 70 3D 3E','E1 7A E4 3F')
+        showMessage("AK47 ON")
+        AK47State = true
+    end
 end
 
 -- GUI
@@ -108,23 +137,18 @@ function startmenu()
         openProcess(pid)
 
         MyForm = createForm(true)
-        MyForm.Caption = 'Codm Cheat Test'
+        MyForm.Caption = 'CODM Cheat Toggle'
         MyForm.Width = 480
-        MyForm.Height = 500  -- بزرگ‌تر شد تا همه دکمه‌ها جا بشن
+        MyForm.Height = 500
 
         local buttons = {
-            {10,10,200,60,HeadshotON,'♦️ Head Shot ON'},
-            {240,10,200,60,HeadshotOFF,'♦️ Head Shot OFF'},
-            {10,80,200,60,RedlineON,'♦️ Red Line ON'},
-            {240,80,200,60,RedlineOFF,'♦️ Red Line OFF'},
-            {10,150,200,60,SpeedON,'♦️ Max Speed ON'},
-            {240,150,200,60,SpeedOFF,'♦️ Max Speed OFF'},
-            {10,220,200,60,JumpON,'♦️ Jump ON'},
-            {240,220,200,60,JumpOFF,'♦️ Jump OFF'},
-            {10,290,200,60,SuperSlideON,'♦️ Super Slide ON'},
-            {240,290,200,60,SuperSlideOFF,'♦️ Super Slide OFF'},
-            {10,360,200,60,RecoilON,'♦️ Recoil ON'},
-            {240,360,200,60,RecoilOFF,'♦️ Recoil OFF'},
+            {10,10,200,60,ToggleHeadshot,'♦️ Head Shot'},
+            {240,10,200,60,ToggleRedline,'♦️ Red Line'},
+            {10,80,200,60,ToggleSpeed,'♦️ Max Speed'},
+            {240,80,200,60,ToggleJump,'♦️ High Jump'},
+            {10,150,200,60,ToggleSuperSlide,'♦️ Super Slide'},
+            {240,150,200,60,ToggleRecoil,'♦️ Recoil'},
+            {125,220,200,60,ToggleAK47,'♦️ AK47'}
         }
 
         for i=1,#buttons do
@@ -154,5 +178,5 @@ EmuButton1.Height = 40
 EmuButton1.onClick = function() emu = "aow_exe"; startmenu(); EmuForm.hide() end
 EmuButton1.Caption = 'Gameloop'
 
-  </LuaScript> 
+  </LuaScript>
 </CheatTable>
