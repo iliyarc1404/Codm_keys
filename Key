@@ -9,6 +9,7 @@ dbk_useKernelmodeProcessMemoryAccess()
 if getOpenedProcessID() then openProcess(getOpenedProcessID()) end
 dbk_writesIgnoreWriteProtection(true)
 
+-- تابع جایگزینی بایت‌ها
 function AOBRep(search, change)
     local aob = AOBScan(search)
     if aob then
@@ -24,48 +25,17 @@ HeadshotState = false
 RedlineState = false
 SpeedState = false
 JumpState = false
-SuperSlideState = false
 RecoilState = false
-AK47State = false
+MagicBodyState = false
 
--- Toggle Functions
+-- توابع Toggle
 function ToggleHeadshot()
     if HeadshotState then
         AOBRep('CD CC CC 3F','BC 74 13 3E')
-        showMessage("Head Shot OFF")
         HeadshotState = false
     else
         AOBRep('BC 74 13 3E','CD CC CC 3F')
-        showMessage("Head Shot ON")
         HeadshotState = true
-    end
-end
-
-function ToggleRedline()
-    if RedlineState then
-        AOBRep('00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40',
-               '00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40')
-        showMessage("Red Line OFF")
-        RedlineState = false
-    else
-        AOBRep('00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40',
-               '00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40')
-        showMessage("Red Line ON")
-        RedlineState = true
-    end
-end
-
-function ToggleSpeed()
-    if SpeedState then
-        AOBRep('00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47',
-               'C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F')
-        showMessage("Speed Normal")
-        SpeedState = false
-    else
-        AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
-               '00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47')
-        showMessage("Max Speed ON")
-        SpeedState = true
     end
 end
 
@@ -73,27 +43,35 @@ function ToggleJump()
     if JumpState then
         AOBRep('00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
                'CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
-        showMessage("Jump OFF")
         JumpState = false
     else
         AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
                '00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
-        showMessage("Jump ON")
         JumpState = true
     end
 end
 
-function ToggleSuperSlide()
-    if SuperSlideState then
-        AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41',
-               '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41')
-        showMessage("Super Slide OFF")
-        SuperSlideState = false
+function ToggleRedline()
+    if RedlineState then
+        AOBRep('00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40',
+               '00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40')
+        RedlineState = false
     else
-        AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41',
-               '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41')
-        showMessage("Super Slide ON")
-        SuperSlideState = true
+        AOBRep('00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40',
+               '00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40')
+        RedlineState = true
+    end
+end
+
+function ToggleSpeed()
+    if SpeedState then
+        AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
+               '00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47')
+        SpeedState = false
+    else
+        AOBRep('00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47',
+               'C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F')
+        SpeedState = true
     end
 end
 
@@ -101,82 +79,82 @@ function ToggleRecoil()
     if RecoilState then
         AOBRep('0A D7 23 3C 0A D7 23 3C 00 00 20 41',
                '00 00 80 3F 00 00 80 3F 00 00 20 41')
-        showMessage("Recoil OFF")
         RecoilState = false
     else
         AOBRep('00 00 80 3F 00 00 80 3F 00 00 20 41',
                '0A D7 23 3C 0A D7 23 3C 00 00 20 41')
-        showMessage("Recoil ON")
         RecoilState = true
     end
 end
 
-function ToggleAK47()
-    if AK47State then
+function ToggleMagicBody()
+    if MagicBodyState then
         AOBRep('E1 7A E4 3F','A4 70 3D 3E')
-        showMessage("AK47 OFF")
-        AK47State = false
+        MagicBodyState = false
     else
         AOBRep('A4 70 3D 3E','E1 7A E4 3F')
-        showMessage("AK47 ON")
-        AK47State = true
+        MagicBodyState = true
     end
 end
 
--- GUI
+-- منوی اصلی
 function startmenu()
-    local p = io.popen('tasklist /fi "IMAGENAME eq '..emu..'.exe" /fi "MEMUSAGE gt 300000" /nh', 'r')
-    local procInfo = p:read('*a')
-    p:close()
-    local pid = tonumber(procInfo:match('%d+'))
+    if not emu then return end
 
-    if not pid then
-        messageDialog("You Must Start The CODM First!", mtWarning, mbOK)
-        closeCE()
-    else
-        openProcess(pid)
+    local MyForm = createForm(true)
+    MyForm.Caption = 'CODM Cheat Toggle'
+    MyForm.Width = 500
+    MyForm.Height = 350
+    MyForm.Color = 0x000000 -- مشکی
 
-        MyForm = createForm(true)
-        MyForm.Caption = 'CODM Cheat Toggle'
-        MyForm.Width = 480
-        MyForm.Height = 500
+    local cheats = {
+        {name="Head Shot", func=ToggleHeadshot},
+        {name="Red Line", func=ToggleRedline},
+        {name="Max Speed", func=ToggleSpeed},
+        {name="High Jump", func=ToggleJump},
+        {name="Recoil", func=ToggleRecoil},
+        {name="Magic Body", func=ToggleMagicBody}
+    }
 
-        local buttons = {
-            {10,10,200,60,ToggleHeadshot,'♦️ Head Shot'},
-            {240,10,200,60,ToggleRedline,'♦️ Red Line'},
-            {10,80,200,60,ToggleSpeed,'♦️ Max Speed'},
-            {240,80,200,60,ToggleJump,'♦️ High Jump'},
-            {10,150,200,60,ToggleSuperSlide,'♦️ Super Slide'},
-            {240,150,200,60,ToggleRecoil,'♦️ Recoil'},
-            {125,220,200,60,ToggleAK47,'♦️ AK47'}
-        }
+    local topMargin = 20
+    local leftMargin = 20
+    local verticalSpacing = 50
+    local horizontalSpacing = 240
 
-        for i=1,#buttons do
-            local b = createButton(MyForm)
-            b.Left = buttons[i][1]
-            b.Top = buttons[i][2]
-            b.Width = buttons[i][3]
-            b.Height = buttons[i][4]
-            b.onClick = buttons[i][5]
-            b.Caption = buttons[i][6]
+    for i=1,#cheats do
+        local row = math.floor((i-1)/2)
+        local col = (i-1)%2
+
+        local cb = createCheckBox(MyForm)
+        cb.Left = leftMargin + col*horizontalSpacing
+        cb.Top = topMargin + row*verticalSpacing
+        cb.Width = 200
+        cb.Height = 40
+        cb.Caption = cheats[i].name
+        cb.ParentFont = false
+        cb.Font.Color = 0xFFFFFF -- متن سفید
+        cb.OnChange = function(sender)
+            cheats[i].func()
         end
     end
 end
 
+-- انتخاب شبیه‌ساز
 emu = nil
-
 EmuForm = createForm(true)
 EmuForm.Caption = 'Select Emulator'
-EmuForm.Width = 300
-EmuForm.Height = 60
+EmuForm.Width = 320
+EmuForm.Height = 80
+EmuForm.Color = 0x000000 -- پس‌زمینه مشکی
 
 EmuButton1 = createButton(EmuForm)
-EmuButton1.Left = 10
-EmuButton1.Top = 10
+EmuButton1.Left = 20
+EmuButton1.Top = 20
 EmuButton1.Width = 280
 EmuButton1.Height = 40
+EmuButton1.ParentFont = false
+EmuButton1.Font.Color = 0xFFFFFF -- متن سفید
 EmuButton1.onClick = function() emu = "aow_exe"; startmenu(); EmuForm.hide() end
 EmuButton1.Caption = 'Gameloop'
-
   </LuaScript>
 </CheatTable>
