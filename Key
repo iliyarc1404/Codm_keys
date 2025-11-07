@@ -39,18 +39,6 @@ function ToggleHeadshot()
     end
 end
 
-function ToggleJump()
-    if JumpState then
-        AOBRep('00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
-               'CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
-        JumpState = false
-    else
-        AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
-               '00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
-        JumpState = true
-    end
-end
-
 function ToggleRedline()
     if RedlineState then
         AOBRep('00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40',
@@ -65,13 +53,25 @@ end
 
 function ToggleSpeed()
     if SpeedState then
-        AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
-               '00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47')
-        SpeedState = false
-    else
         AOBRep('00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47',
                'C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F')
+        SpeedState = false
+    else
+        AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
+               '00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47')
         SpeedState = true
+    end
+end
+
+function ToggleJump()
+    if JumpState then
+        AOBRep('00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
+               'CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+        JumpState = false
+    else
+        AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
+               '00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
+        JumpState = true
     end
 end
 
@@ -97,44 +97,45 @@ function ToggleMagicBody()
     end
 end
 
--- منوی اصلی
+-- GUI با رنگ تاریک و متن سفید
 function startmenu()
-    if not emu then return end
+    local p = io.popen('tasklist /fi "IMAGENAME eq '..emu..'.exe" /fi "MEMUSAGE gt 300000" /nh', 'r')
+    local procInfo = p:read('*a')
+    p:close()
+    local pid = tonumber(procInfo:match('%d+'))
 
-    local MyForm = createForm(true)
-    MyForm.Caption = 'CODM Cheat Toggle'
-    MyForm.Width = 500
-    MyForm.Height = 350
-    MyForm.Color = 0x000000 -- مشکی
+    if not pid then
+        messageDialog("You Must Start The CODM First!", mtWarning, mbOK)
+        closeCE()
+    else
+        openProcess(pid)
 
-    local cheats = {
-        {name="Head Shot", func=ToggleHeadshot},
-        {name="Red Line", func=ToggleRedline},
-        {name="Max Speed", func=ToggleSpeed},
-        {name="High Jump", func=ToggleJump},
-        {name="Recoil", func=ToggleRecoil},
-        {name="Magic Body", func=ToggleMagicBody}
-    }
+        MyForm = createForm(true)
+        MyForm.Caption = 'CODM Cheat Toggle'
+        MyForm.Width = 480
+        MyForm.Height = 400
+        MyForm.Color = 0x202020 -- پس زمینه تاریک
 
-    local topMargin = 20
-    local leftMargin = 20
-    local verticalSpacing = 50
-    local horizontalSpacing = 240
+        local cheats = {
+            {name="Head Shot", func=ToggleHeadshot},
+            {name="Red Line", func=ToggleRedline},
+            {name="Max Speed", func=ToggleSpeed},
+            {name="High Jump", func=ToggleJump},
+            {name="Recoil", func=ToggleRecoil},
+            {name="Magic Body", func=ToggleMagicBody}
+        }
 
-    for i=1,#cheats do
-        local row = math.floor((i-1)/2)
-        local col = (i-1)%2
-
-        local cb = createCheckBox(MyForm)
-        cb.Left = leftMargin + col*horizontalSpacing
-        cb.Top = topMargin + row*verticalSpacing
-        cb.Width = 200
-        cb.Height = 40
-        cb.Caption = cheats[i].name
-        cb.ParentFont = false
-        cb.Font.Color = 0xFFFFFF -- متن سفید
-        cb.OnChange = function(sender)
-            cheats[i].func()
+        for i=1,#cheats do
+            local cb = createCheckBox(MyForm)
+            cb.Left = 10 + ((i-1)%2)*240
+            cb.Top = 10 + math.floor((i-1)/2)*60
+            cb.Width = 220
+            cb.Height = 40
+            cb.Caption = cheats[i].name
+            cb.Font.Color = 0xFFFFFF -- متن سفید
+            cb.OnChange = function(sender)
+                cheats[i].func()
+            end
         end
     end
 end
@@ -143,18 +144,18 @@ end
 emu = nil
 EmuForm = createForm(true)
 EmuForm.Caption = 'Select Emulator'
-EmuForm.Width = 320
-EmuForm.Height = 80
-EmuForm.Color = 0x000000 -- پس‌زمینه مشکی
+EmuForm.Width = 300
+EmuForm.Height = 60
+EmuForm.Color = 0x202020 -- پس زمینه تاریک
 
 EmuButton1 = createButton(EmuForm)
-EmuButton1.Left = 20
-EmuButton1.Top = 20
+EmuButton1.Left = 10
+EmuButton1.Top = 10
 EmuButton1.Width = 280
 EmuButton1.Height = 40
-EmuButton1.ParentFont = false
 EmuButton1.Font.Color = 0xFFFFFF -- متن سفید
 EmuButton1.onClick = function() emu = "aow_exe"; startmenu(); EmuForm.hide() end
 EmuButton1.Caption = 'Gameloop'
+
   </LuaScript>
 </CheatTable>
