@@ -4,117 +4,36 @@
   <UserdefinedSymbols/>
   <LuaScript>
 
+-- تابع جایگزینی AOB
 function AOBRep(search, change)
     local aob = AOBScan(search)
     if aob then
-        for m=0,aob.Count-1 do
-            autoAssemble(aob[m]..':\ndb '..change)
+        for i=0,aob.Count-1 do
+            autoAssemble(aob[i]..':\ndb '..change)
         end
         aob.Destroy()
     end
 end
 
--- وضعیت Toggle
-HeadshotState = false
-RedlineState = false
-SpeedState = false
-JumpState = false
-SuperSlideState = false
-RecoilState = false
-AK47State = false
+-- وضعیت Teleport
+TeleportState = false
 
--- Toggle Functions
-function ToggleHeadshot()
-    if HeadshotState then
-        AOBRep('CD CC CC 3F','BC 74 13 3E')
-        showMessage("Head Shot OFF")
-        HeadshotState = false
-    else
-        AOBRep('BC 74 13 3E','CD CC CC 3F')
-        showMessage("Head Shot ON")
-        HeadshotState = true
-    end
-end
-
-function ToggleRedline()
-    if RedlineState then
-        AOBRep('00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40',
-               '00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40')
-        showMessage("Red Line OFF")
-        RedlineState = false
-    else
-        AOBRep('00 00 80 40 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 40 40',
-               '00 00 48 42 00 00 80 3F 00 00 96 43 00 00 00 00 00 00 00 00 00 00 40 40')
-        showMessage("Red Line ON")
-        RedlineState = true
-    end
-end
-
-function ToggleSpeed()
-    if SpeedState then
+-- تابع Toggle Teleport
+function ToggleTeleport()
+    if TeleportState then
         AOBRep('00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47',
                'C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F')
-        showMessage("Speed Normal")
-        SpeedState = false
+        showMessage("Teleport OFF")
+        TeleportState = false
     else
         AOBRep('C3 F5 88 40 CD CC 4C 40 CD CC 4C 40 00 00 00 3F',
                '00 00 C8 47 00 00 C8 47 00 00 C8 47 00 00 C8 47')
-        showMessage("Max Speed ON")
-        SpeedState = true
+        showMessage("Teleport ON")
+        TeleportState = true
     end
 end
 
-function KN()
-    AOBRep('CD CC 4C 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41',
-           '00 00 A0 40 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E 48 E1 85 41')
-    AOBRep('00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 66 66 76 40 00 00 80 40',
-           '00 00 A0 40 00 00 A0 40 9A 99 99 3E 66 66 76 40 00 00 7A 44 00 00 80 40')
-    AOBRep('00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 3F 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E',
-           '00 00 20 41 00 00 20 41 00 00 80 3F 00 00 80 40 00 00 C0 3F 9A 99 99 3E 9A 99 19 3E')
-    showMessage("High Jump Active")
-end
-
-function ToggleSuperSlide()
-    if SuperSlideState then
-        AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41',
-               '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41')
-        showMessage("Super Slide OFF")
-        SuperSlideState = false
-    else
-        AOBRep('00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F CD CC 4C 3E 00 00 F0 41 66 66 66 3F 00 00 F0 41',
-               '00 00 00 00 9A 99 19 3E 00 00 80 3E 00 00 00 40 66 66 66 3F 00 00 C8 42 00 00 F0 41 66 66 66 3F 00 00 F0 41')
-        showMessage("Super Slide ON")
-        SuperSlideState = true
-    end
-end
-
-function ToggleRecoil()
-    if RecoilState then
-        AOBRep('0A D7 23 3C 0A D7 23 3C 00 00 20 41',
-               '00 00 80 3F 00 00 80 3F 00 00 20 41')
-        showMessage("Recoil OFF")
-        RecoilState = false
-    else
-        AOBRep('00 00 80 3F 00 00 80 3F 00 00 20 41',
-               '0A D7 23 3C 0A D7 23 3C 00 00 20 41')
-        showMessage("Recoil ON")
-        RecoilState = true
-    end
-end
-
-function ToggleAK47()
-    if AK47State then
-        AOBRep('E1 7A E4 3F','A4 70 3D 3E')
-        showMessage("AK47 OFF")
-        AK47State = false
-    else
-        AOBRep('A4 70 3D 3E','E1 7A E4 3F')
-        showMessage("AK47 ON")
-        AK47State = true
-    end
-end
-
--- GUI
+-- نمایش منوی اصلی
 function startmenu()
     local p = io.popen('tasklist /fi "IMAGENAME eq '..emu..'.exe" /fi "MEMUSAGE gt 300000" /nh', 'r')
     local procInfo = p:read('*a')
@@ -127,47 +46,48 @@ function startmenu()
     else
         openProcess(pid)
 
-        MyForm = createForm(true)
-        MyForm.Caption = 'CODM Cheat Toggle'
-        MyForm.Width = 480
-        MyForm.Height = 500
+        local MyForm = createForm(true)
+        MyForm.Caption = 'CODM Cheat - Teleport'
+        MyForm.Width = 240
+        MyForm.Height = 200
 
-        local buttons = {
-            {10,10,200,60,ToggleHeadshot,'♦️ Head Shot'},
-            {240,10,200,60,ToggleRedline,'♦️ Red Line'},
-            {10,80,200,60,ToggleSpeed,'♦️ Max Speed'},
-            {240,80,200,60,ToggleJump,'♦️ High Jump'},
-            {10,150,200,60,ToggleSuperSlide,'♦️ Super Slide'},
-            {240,150,200,60,ToggleRecoil,'♦️ Recoil'},
-            {125,220,200,60,ToggleAK47,'♦️ AK47'}
-        }
+        local b = createButton(MyForm)
+        b.Left = 20
+        b.Top = 40
+        b.Width = 200
+        b.Height = 60
+        b.Caption = 'Telport'
+        b.onClick = ToggleTeleport
 
-        for i=1,#buttons do
-            local b = createButton(MyForm)
-            b.Left = buttons[i][1]
-            b.Top = buttons[i][2]
-            b.Width = buttons[i][3]
-            b.Height = buttons[i][4]
-            b.onClick = buttons[i][5]
-            b.Caption = buttons[i][6]
-        end
+        -- اضافه کردن Label پایین منو
+        local l = createLabel(MyForm)
+        l.Left = 20
+        l.Top = 120
+        l.Width = 200
+        l.Height = 20
+        l.Caption = 'Cheat made by ILIYA RC '
+        l.Alignment = taCenter
     end
 end
 
+-- انتخاب شبیه‌ساز
 emu = nil
-
-EmuForm = createForm(true)
+local EmuForm = createForm(true)
 EmuForm.Caption = 'Select Emulator'
 EmuForm.Width = 300
 EmuForm.Height = 60
 
-EmuButton1 = createButton(EmuForm)
+local EmuButton1 = createButton(EmuForm)
 EmuButton1.Left = 10
 EmuButton1.Top = 10
 EmuButton1.Width = 280
 EmuButton1.Height = 40
-EmuButton1.onClick = function() emu = "aow_exe"; startmenu(); EmuForm.hide() end
 EmuButton1.Caption = 'Gameloop'
+EmuButton1.onClick = function()
+    emu = "aow_exe"
+    startmenu()
+    EmuForm.hide()
+end
 
   </LuaScript>
 </CheatTable>
